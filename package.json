@@ -1,0 +1,30 @@
+{
+  "name": "gulp-rev-handle",
+  "version": "1.0.0",
+  "description": "Through regular handling file version",
+  "main": "index.js",
+  "repository": "yujingwyh/gulp-rev-handle",
+  "scripts": {
+    "test": "mocha"
+  },
+  "keywords": [
+    "gulpplugin",
+    "rev",
+    "revision",
+    "version",
+    "replace"
+  ],
+  "author": {
+    "name": "yujingwyh",
+    "email": "yujingwyh@163.com"
+  },
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "gulp-util": "^3.0.7",
+    "md5": "^2.2.1",
+    "through2": "^2.0.0"
+  }
+}
