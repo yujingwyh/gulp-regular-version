@@ -39,10 +39,13 @@ gulpfile.js
 var revHandle = require('gulp-rev-handle');
 
 gulp.task("index", function() {
- gulp.src('./src/hello.txt')
+ gulp.src('hello.txt')
     .pipe(revHandle({
-      handleRev:function(path,data,md5){
-        return path + '?version=' + md5(data);
+      handlePath(path){
+        return './src/' + path;
+      },
+      handleRev(path,md5){
+        return path.replace('./src/','./dist/') + '?version=' + md5;
       }
     }))
     .pipe(gulp.dest(./dist'));

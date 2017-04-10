@@ -19,7 +19,7 @@ function plugin(options) {
     options.handleRev = options.handleRev || null;
 
     return through.obj(function (file, enc, cb) {
-        var path, data;
+        var path, md5Value;
 
         if (file.isNull()) {
             this.push(file);
@@ -34,9 +34,9 @@ function plugin(options) {
             path = options.handlePath ? options.handlePath(pattern) : pattern;
             try {
                 if (!cache[path]) {
-                    data = fs.readFileSync(path).toString();
+                    md5Value = md5(fs.readFileSync(path).toString());
 
-                    cache[path] = options.handleRev ? options.handleRev(path, data, md5) : path + '?rev=' + md5(data);
+                    cache[path] = options.handleRev ? options.handleRev(path, md5Value) : path + '?rev=' + md5Value;
                 }
 
                 pattern = cache[path];
