@@ -1,7 +1,7 @@
 {
   "name": "gulp-rev-handle",
   "version": "1.0.0",
-  "description": "Through the RegExp handling file version",
+  "description": "Just match the file path and then give it md5 for version control",
   "main": "index.js",
   "repository": "yujingwyh/gulp-rev-handle",
   "scripts": {
