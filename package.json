@@ -1,7 +1,7 @@
 {
   "name": "gulp-rev-handle",
   "version": "1.0.0",
-  "description": "Through regular handling file version",
+  "description": "Through the RegExp handling file version",
   "main": "index.js",
   "repository": "yujingwyh/gulp-rev-handle",
   "scripts": {
