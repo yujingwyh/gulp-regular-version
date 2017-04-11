@@ -15,15 +15,15 @@ $ npm install --save-dev gulp-rev-replace
 First match the file to match the first subexpression in the pattern to match the string as the file path and calculate the file md5, and finally replace it with: path?rev=md5
 ```
 hellp.js
-var htmlPath = '@{rev-./index.html};
+var htmlPath = '@{rev-./index.html}';
 
 gulpfile.js
 var revHandle = require('gulp-rev-handle');
 
-gulp.task("index", function() {
+gulp.task("default", function() {
  gulp.src('./src/hello.js')
     .pipe(revHandle())
-    .pipe(gulp.dest(./dist'));
+    .pipe(gulp.dest('./dist'));
  /*
  dist/hello.js
  var htmlPath = './index.html?rev=880a2183ab21cedb466f09809f6bb7de';
@@ -33,12 +33,12 @@ gulp.task("index", function() {
 You can also use the function:
 ```
 hellp.js
-var htmlPath = '@{rev-index.html};
+var htmlPath = '@{rev-index.html}';
 
 gulpfile.js
 var revHandle = require('gulp-rev-handle');
 
-gulp.task("index", function() {
+gulp.task("default", function() {
  gulp.src('./src/hello.js')
     .pipe(revHandle({
       handlePath(path){
@@ -49,7 +49,7 @@ gulp.task("index", function() {
         return path.replace('./src/','./dist/') + '?version=' + md5;
       }
     }))
-    .pipe(gulp.dest(./dist'));
+    .pipe(gulp.dest('./dist'));
  /*
  dist/hello.js
  var htmlPath = './dist/index.html?version=880a2183ab21cedb466f09809f6bb7de';
