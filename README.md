@@ -1,4 +1,4 @@
-[gulp](https://github.com/wearefractal/gulp)-rev-handle
+[gulp](https://github.com/wearefractal/gulp)-regular-version
 ================
 
 Just match the file path, and then give it md5 for version control
@@ -6,7 +6,7 @@ Just match the file path, and then give it md5 for version control
 ## Install
 
 ```bash
-$ npm install --save-dev gulp-rev-replace
+$ npm install --save-dev gulp-regular-version
 ```
 
 
@@ -18,11 +18,11 @@ hellp.js
 var htmlPath = '@{rev-./index.html}';
 
 gulpfile.js
-var revHandle = require('gulp-rev-handle');
+var versionHandle = require('gulp-regular-version');
 
 gulp.task("default", function() {
  gulp.src('./src/hello.js')
-    .pipe(revHandle())
+    .pipe(versionHandle())
     .pipe(gulp.dest('./dist'));
  /*
  dist/hello.js
@@ -36,11 +36,11 @@ hellp.js
 var htmlPath = '@{rev-index.html}';
 
 gulpfile.js
-var revHandle = require('gulp-rev-handle');
+var versionHandle = require('gulp-regular-version');
 
 gulp.task("default", function() {
  gulp.src('./src/hello.js')
-    .pipe(revHandle({
+    .pipe(versionHandle({
       handlePath(path){
         //path = index.html; 
         return './src/' + path;
@@ -59,7 +59,7 @@ gulp.task("default", function() {
 
 ## API
 
-### revHandle(options)
+### versionHandle(options)
 
 #### options
 

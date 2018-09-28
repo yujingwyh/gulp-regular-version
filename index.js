@@ -1,16 +1,14 @@
 'use strict';
 
-module.exports = plugin;
+const PLUGIN_NAME = 'gulp-regular-version';
 
-const PLUGIN_NAME = 'gulp-rev-handle';
-
-var fs = require('fs');
-var gutil = require('gulp-util');
-var through = require('through2');
-var md5 = require('md5');
+const fs = require('fs');
+const gutil = require('gulp-util');
+const through = require('through2');
+const md5 = require('md5');
 
 function plugin(options) {
-    var cache = {};
+    const cache = {};
 
     options = options || {};
 
@@ -30,7 +28,7 @@ function plugin(options) {
             this.emit('error', new gutil.PluginError(PLUGIN_NAME, 'Streaming not supported'));
             return cb();
         }
-        var content = file.contents.toString().replace(options.reg, function (words, pattern) {
+        const content = file.contents.toString().replace(options.reg, function (words, pattern) {
             path = options.handlePath ? options.handlePath(pattern) : pattern;
             try {
                 if (!cache[path]) {
@@ -54,3 +52,6 @@ function plugin(options) {
         cb();
     });
 }
+
+
+module.exports = plugin;

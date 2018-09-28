@@ -1,22 +1,19 @@
 {
-  "name": "gulp-rev-handle",
+  "name": "gulp-regular-version",
   "version": "1.1.3",
   "description": "Just match the file path and then give it md5 for version control",
   "main": "index.js",
-  "repository": "yujingwyh/gulp-rev-handle",
+  "repository": "yujingwyh/gulp-regular-version",
   "keywords": [
-    "gulpplugin",
-    "rev",
-    "revision",
+    "regular",
     "version",
+    "gulp",
+    "plugin",
     "replace"
   ],
   "author": {
     "name": "yujingwyh",
     "email": "yujingwyh@163.com"
-  },
-  "engines": {
-    "node": ">=0.10.0"
   },
   "license": "MIT",
   "dependencies": {
