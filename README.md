@@ -9,7 +9,6 @@ Just match the file path, and then give it md5 for version control
 $ npm install --save-dev gulp-regular-version
 ```
 
-
 ## Usage
 
 First match the file to match the first subexpression in the pattern to match the string as the file path and calculate the file md5, and finally replace it with: path?rev=md5

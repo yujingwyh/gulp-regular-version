@@ -17,7 +17,7 @@ function plugin(options) {
     options.handleRev = options.handleRev || null;
 
     return through.obj(function (file, enc, cb) {
-        var path, md5Value;
+        let path, md5Value;
 
         if (file.isNull()) {
             this.push(file);
