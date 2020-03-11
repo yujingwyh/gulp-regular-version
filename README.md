@@ -23,7 +23,7 @@ gulp.task('version',function() {
   return gulp.src('./dist/**/*.{html,css}')
       .pipe(gulpRegularVersion({
         addVersion(path, getFileHash) {
-          return path + '?v=' + getFileHash(path, './dist')
+          return path + '?v=' + getFileHash('./dist')
         }
       }))
       .pipe(gulp.dest('./dist'));
@@ -62,7 +62,7 @@ body{
 
 ##### regs
 
-Type: `regular[]`<br>
+Type: `RegExp[]`<br>
 Default: 
 ```javascript
 [
@@ -76,7 +76,7 @@ Match resource path
 
 ##### correctPath
 
-Type: `function`<br>
+Type: `(match:string,file:File)=>string`<br>
 Default: 
 ```javascript
 function correctPath(match, file) {
@@ -90,7 +90,7 @@ Correct the path through regular match
 
 ##### addVersion
 
-Type: `function`<br>
+Type: `(path:string,getFileHash:(basePath:string)=>string)=>string`<br>
 Default: 
 ```javascript
 function addVersion(path, getFileHash) {

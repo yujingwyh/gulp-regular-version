@@ -23,34 +23,38 @@ function plugin(options) {
 
                 const relativePath = options.correctPath(match, file);
 
-                return match.replace(relativePath, options.addVersion(relativePath, getFileHash))
+                return match.replace(relativePath, options.addVersion(
+                    relativePath,
+                    (basePath) => getHash.call(that, relativePath, file.dirname, basePath)
+                ))
             })
         });
 
 
         return content;
+    }
 
-        function getFileHash(relativePath, basePath = '') {
-            const absolutePath = toAbsolute(file, relativePath);
-            try {
-                if (!caches[absolutePath]) {
-                    caches[absolutePath] = md5(fs.readFileSync(absolutePath).toString());
-                }
+    function getHash(relativePath, ownedFilePath, basePath = '') {
+        const absolutePath = toAbsolute();
 
-                return caches[absolutePath];
-            } catch (e) {
-                that.emit('error', new gUtil.PluginError(PLUGIN_NAME, "Can't solve the version control:" + relativePath));
+        try {
+            if (!caches[absolutePath]) {
+                caches[absolutePath] = md5(fs.readFileSync(absolutePath).toString());
             }
 
-            return '';
+            return caches[absolutePath];
+        } catch (e) {
+            this.emit('error', new gUtil.PluginError(PLUGIN_NAME, "Can't solve the version control:" + relativePath));
+        }
 
-            function toAbsolute() {
-                if (relativePath.charAt(0) === '/') {
-                    return path.resolve(process.cwd(), basePath + relativePath);
-                }
+        return '';
 
-                return path.resolve(file.dirname, relativePath);
+        function toAbsolute() {
+            if (relativePath.charAt(0) === '/') {
+                return path.resolve(process.cwd(), basePath + relativePath);
             }
+
+            return path.resolve(ownedFilePath, relativePath);
         }
     }
 
@@ -73,7 +77,6 @@ function plugin(options) {
         cb();
     });
 }
-
 
 plugin.defaultOptions = {
     regs: [
