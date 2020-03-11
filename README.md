@@ -1,7 +1,7 @@
 [gulp](https://github.com/wearefractal/gulp)-regular-version
 ================
 
-By regular matching to the file path, then adding the version number
+By regular match to the file path, then add the version number
 
 ## Install
 
@@ -32,9 +32,27 @@ module.exports = function rev() {
 
 It can handle resource references in html and css
 
-```javascript
+```html
+<link rel="stylesheet" href="main.css">
+<script src="main.js"></script>
 
+<!-- If main.js and main.css files exist, then after processing -->
+<link rel="stylesheet" href="main.css?v=475fe0bb93bd377038f98dbd8bbc647c">
+<script src="main.js?v=475fe0bb93bd377038f98dbd8bbc647c"></script>
 ```
+
+```css
+body{
+    background: url("main.jpg");
+}
+/*If main.jpg file exist, then after processing*/
+
+body{
+    background: url("main.jpg?v=475fe0bb93bd377038f98dbd8bbc647c");
+}
+```
+
+Here is a [demo](https://github.com/yujingwyh/gulp-template)
 
 ## API
 
@@ -45,23 +63,42 @@ It can handle resource references in html and css
 ##### regs
 
 Type: `regular[]`<br>
-Default: `/@\{rev\-([^\s>"'\?]+?)\}/ig`
+Default: 
+```javascript
+[
+    /\s+href\s*=\s*(['"]).+?\.(css)\1/ig,
+    /\s+src\s*=\s*(['"]).+?\.(js|png|gif|jpg|jpeg)\1/ig,
+    /:\s*url\((['"]?).+?\.(png|gif|jpg|jpeg)\1\)/ig
+]
+```
 
-Match the path (the first model expression is the true path).
+Match resource path
 
-##### handlePath
+##### correctPath
 
 Type: `function`<br>
-Default: `null`
+Default: 
+```javascript
+function correctPath(match, file) {
+    return match
+        .replace(/^.+?(\(|['"]){1,2}/ig, '')
+        .replace(/(\)|['"]){1,2}$/ig, '')
+}
+```
 
-Correct matching to the path,accepts the path and the revised return path.
+Correct the path through regular match
 
-##### handleRev
+##### addVersion
 
 Type: `function`<br>
-Default: `null`
+Default: 
+```javascript
+function addVersion(path, getFileHash) {
+    return path + '?v=' + getFileHash(path)
+}
+```
 
-Version replace.
+Add version number to path
 
 ## License
 

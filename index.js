@@ -77,7 +77,7 @@ function plugin(options) {
 
 plugin.defaultOptions = {
     regs: [
-        /\s+href\s*=\s*(['"]).+?\.(css|html)\1/ig,
+        /\s+href\s*=\s*(['"]).+?\.(css)\1/ig,
         /\s+src\s*=\s*(['"]).+?\.(js|png|gif|jpg|jpeg)\1/ig,
         /:\s*url\((['"]?).+?\.(png|gif|jpg|jpeg)\1\)/ig
     ],
