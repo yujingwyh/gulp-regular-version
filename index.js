@@ -1,9 +1,9 @@
 'use strict';
 
 const fs = require('fs');
-const gUtil = require('gulp-util');
 const through = require('through2');
 const md5 = require('md5');
+const PluginError = require('plugin-error');
 const path = require('path');
 
 const PLUGIN_NAME = 'gulp-regular-version';
@@ -44,7 +44,7 @@ function plugin(options) {
 
             return caches[absolutePath];
         } catch (e) {
-            this.emit('error', new gUtil.PluginError(PLUGIN_NAME, "Can't solve the version control:" + relativePath));
+            this.emit('error', new PluginError(PLUGIN_NAME, "Can't solve the version control:" + relativePath));
         }
 
         return '';
@@ -65,7 +65,7 @@ function plugin(options) {
         }
 
         if (file.isStream()) {
-            this.emit('error', new gUtil.PluginError(PLUGIN_NAME, 'Streaming not supported'));
+            this.emit('error', new PluginError(PLUGIN_NAME, 'Streaming not supported'));
             return cb();
         }
         const content = replaceContent(file, this);
