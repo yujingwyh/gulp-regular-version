@@ -1,7 +1,7 @@
 [gulp](https://github.com/wearefractal/gulp)-regular-version
 ================
 
-Just match the file path, and then give it md5 for version control
+By regular matching to the file path, then adding the version number
 
 ## Install
 
@@ -11,49 +11,29 @@ $ npm install --save-dev gulp-regular-version
 
 ## Usage
 
-First match the file to match the first subexpression in the pattern to match the string as the file path and calculate the file md5, and finally replace it with: path?rev=md5
-```
-hellp.js
-var htmlPath = '@{rev-./index.html}';
+First match to file path by regular match, 
+then add file hash version number
 
-gulpfile.js
-var versionHandle = require('gulp-regular-version');
+Example:
+```javascript
+const gulp = require('gulp');
+const gulpRegularVersion = require('gulp-regular-version');
 
-gulp.task("default", function() {
- gulp.src('./src/hello.js')
-    .pipe(versionHandle())
-    .pipe(gulp.dest('./dist'));
- /*
- dist/hello.js
- var htmlPath = './index.html?rev=880a2183ab21cedb466f09809f6bb7de';
- */   
-});
-```
-You can also use the function:
-```
-hellp.js
-var htmlPath = '@{rev-index.html}';
-
-gulpfile.js
-var versionHandle = require('gulp-regular-version');
-
-gulp.task("default", function() {
- gulp.src('./src/hello.js')
-    .pipe(versionHandle({
-      handlePath(path){
-        //path = index.html; 
-        return './src/' + path;
-      },
-      handleRev(path,md5){
-        return path.replace('./src/','./dist/') + '?version=' + md5;
+module.exports = function rev() {
+  return gulp.src('./dist/**/*.{html,css}')
+    .pipe(gulpRegularVersion({
+      addVersion(path, getFileHash) {
+        return path + '?v=' + getFileHash(path, './dist')
       }
     }))
-    .pipe(gulp.dest('./dist'));
- /*
- dist/hello.js
- var htmlPath = './dist/index.html?version=880a2183ab21cedb466f09809f6bb7de';
- */   
-});
+    .pipe(gulp.dest(config.rootOutput));
+};
+```
+
+It can handle resource references in html and css
+
+```javascript
+
 ```
 
 ## API
@@ -62,9 +42,9 @@ gulp.task("default", function() {
 
 #### options
 
-##### reg
+##### regs
 
-Type: `regular`<br>
+Type: `regular[]`<br>
 Default: `/@\{rev\-([^\s>"'\?]+?)\}/ig`
 
 Match the path (the first model expression is the true path).

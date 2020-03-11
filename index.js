@@ -1,51 +1,72 @@
 'use strict';
 
-const PLUGIN_NAME = 'gulp-regular-version';
-
 const fs = require('fs');
-const gutil = require('gulp-util');
+const gUtil = require('gulp-util');
 const through = require('through2');
 const md5 = require('md5');
+const path = require('path');
+
+const PLUGIN_NAME = 'gulp-regular-version';
 
 function plugin(options) {
-    const cache = {};
+    const caches = {};
 
-    options = options || {};
+    options = Object.assign({}, plugin.defaultOptions, options || {});
 
-    options.reg = options.reg || /@\{rev\-([^\s>"'\?]+?)\}/ig;
-    options.handlePath = options.handlePath || null;
-    options.handleRev = options.handleRev || null;
+    function replaceContent(file, that) {
+        let content = file.contents.toString();
+
+        options.regs.forEach(function (reg) {
+            content = content.replace(reg, function (match) {
+                //有协议直接过滤
+                if (match.indexOf('://') > -1) return match;
+
+                const relativePath = options.correctPath(match, file);
+
+                return match.replace(relativePath, options.addVersion(relativePath, getFileHash))
+            })
+        });
+
+
+        return content;
+
+        function getFileHash(relativePath, basePath = '') {
+            const absolutePath = toAbsolute(file, relativePath);
+            try {
+                if (!caches[absolutePath]) {
+                    caches[absolutePath] = md5(fs.readFileSync(absolutePath).toString());
+                }
+
+                return caches[absolutePath];
+            } catch (e) {
+                that.emit('error', new gUtil.PluginError(PLUGIN_NAME, "Can't solve the version control:" + relativePath));
+            }
+
+            return '';
+
+            function toAbsolute() {
+                if (relativePath.charAt(0) === '/') {
+                    return path.resolve(process.cwd(), basePath + relativePath);
+                }
+
+                return path.resolve(file.dirname, relativePath);
+            }
+        }
+    }
 
     return through.obj(function (file, enc, cb) {
-        let path, md5Value;
-
         if (file.isNull()) {
             this.push(file);
             return cb();
         }
 
         if (file.isStream()) {
-            this.emit('error', new gutil.PluginError(PLUGIN_NAME, 'Streaming not supported'));
+            this.emit('error', new gUtil.PluginError(PLUGIN_NAME, 'Streaming not supported'));
             return cb();
         }
-        const content = file.contents.toString().replace(options.reg, function (words, pattern) {
-            path = options.handlePath ? options.handlePath(pattern) : pattern;
-            try {
-                if (!cache[path]) {
-                    md5Value = md5(fs.readFileSync(path).toString());
+        const content = replaceContent(file, this);
 
-                    cache[path] = options.handleRev ? options.handleRev(path, md5Value) : path + '?rev=' + md5Value;
-                }
-
-                pattern = cache[path];
-            }
-            catch (e) {
-                gutil.log("Can't solve the version control-" + path);
-            }
-            return pattern;
-        });
-
-        file.contents = new Buffer(content);
+        file.contents = new Buffer.from(content);
 
         this.push(file);
 
@@ -53,5 +74,21 @@ function plugin(options) {
     });
 }
 
+
+plugin.defaultOptions = {
+    regs: [
+        /\s+href\s*=\s*(['"]).+?\.(css|html)\1/ig,
+        /\s+src\s*=\s*(['"]).+?\.(js|png|gif|jpg|jpeg)\1/ig,
+        /:\s*url\((['"]?).+?\.(png|gif|jpg|jpeg)\1\)/ig
+    ],
+    correctPath(match, file) {
+        return match
+            .replace(/^.+?(\(|['"]){1,2}/ig, '')
+            .replace(/(\)|['"]){1,2}$/ig, '')
+    },
+    addVersion(path, getFileHash) {
+        return path + '?v=' + getFileHash(path)
+    }
+};
 
 module.exports = plugin;

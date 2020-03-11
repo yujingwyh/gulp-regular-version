@@ -1,7 +1,7 @@
 {
   "name": "gulp-regular-version",
-  "version": "1.2.0",
-  "description": "Just match the file path and then give it md5 for version control",
+  "version": "2.0.0",
+  "description": "By regular matching to the file path, then adding the version number",
   "main": "index.js",
   "repository": "yujingwyh/gulp-regular-version",
   "keywords": [
@@ -19,6 +19,7 @@
   "dependencies": {
     "gulp-util": "^3.0.7",
     "md5": "^2.2.1",
-    "through2": "^2.0.0"
+    "path": "^0.12.7",
+    "through2": "^3.0.1"
   }
 }
