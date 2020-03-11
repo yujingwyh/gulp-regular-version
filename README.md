@@ -1,7 +1,7 @@
 [gulp](https://github.com/wearefractal/gulp)-regular-version
 ================
 
-By regular match to the file path, then add the version number
+By regular match to the resource path, then add the version number
 
 ## Install
 
@@ -11,7 +11,7 @@ $ npm install --save-dev gulp-regular-version
 
 ## Usage
 
-First match to file path by regular, 
+First match to resource path by regular, 
 then add file hash version number
 
 Example:
