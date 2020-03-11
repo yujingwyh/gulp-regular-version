@@ -11,7 +11,7 @@ $ npm install --save-dev gulp-regular-version
 
 ## Usage
 
-First match to file path by regular match, 
+First match to file path by regular, 
 then add file hash version number
 
 Example:
@@ -19,15 +19,15 @@ Example:
 const gulp = require('gulp');
 const gulpRegularVersion = require('gulp-regular-version');
 
-module.exports = function rev() {
+gulp.task('version',function() {
   return gulp.src('./dist/**/*.{html,css}')
-    .pipe(gulpRegularVersion({
-      addVersion(path, getFileHash) {
-        return path + '?v=' + getFileHash(path, './dist')
-      }
-    }))
-    .pipe(gulp.dest(config.rootOutput));
-};
+      .pipe(gulpRegularVersion({
+        addVersion(path, getFileHash) {
+          return path + '?v=' + getFileHash(path, './dist')
+        }
+      }))
+      .pipe(gulp.dest('./dist'));
+});
 ```
 
 It can handle resource references in html and css
@@ -45,14 +45,14 @@ It can handle resource references in html and css
 body{
     background: url("main.jpg");
 }
-/*If main.jpg file exist, then after processing*/
 
+/*If main.jpg file exist, then after processing*/
 body{
     background: url("main.jpg?v=475fe0bb93bd377038f98dbd8bbc647c");
 }
 ```
 
-Here is a [demo](https://github.com/yujingwyh/gulp-template)
+**Here is a [demo](https://github.com/yujingwyh/gulp-template)**
 
 ## API
 
