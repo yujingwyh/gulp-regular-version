@@ -1,6 +1,6 @@
 {
   "name": "gulp-regular-version",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "By regular matching to the file path, then adding the version number",
   "main": "index.js",
   "repository": "yujingwyh/gulp-regular-version",

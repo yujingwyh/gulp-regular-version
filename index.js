@@ -90,7 +90,7 @@ plugin.defaultOptions = {
             .replace(/(\)|['"]){1,2}$/ig, '')
     },
     addVersion(path, getFileHash) {
-        return path + '?v=' + getFileHash(path)
+        return path + '?v=' + getFileHash()
     }
 };
 

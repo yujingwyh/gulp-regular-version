@@ -94,7 +94,7 @@ Type: `(path:string,getFileHash:(basePath:string)=>string)=>string`<br>
 Default: 
 ```javascript
 function addVersion(path, getFileHash) {
-    return path + '?v=' + getFileHash(path)
+    return path + '?v=' + getFileHash()
 }
 ```
 
