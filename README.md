@@ -90,7 +90,7 @@ Correct the path through regular match
 
 ##### addVersion
 
-Type: `(path:string,getFileHash:(basePath:string)=>string)=>string`<br>
+Type: `(path:string,getFileHash:(basePath?:string)=>string)=>string`<br>
 Default: 
 ```javascript
 function addVersion(path, getFileHash) {
